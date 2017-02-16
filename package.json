@@ -1,0 +1,24 @@
+{
+  "name": "chost",
+  "version": "1.0.0",
+  "description": "Host change tool for mac",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "host",
+    "mac"
+  ],
+  "preferGlobal": true,
+  "author": "jerryni <jerryni2014@gmail.com>",
+  "bin": {
+    "chost": "index.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^6.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.15.0"
+  }
+}
