@@ -24,10 +24,45 @@ var argv = yargs
     .epilog('copyright 2017')
     .argv
 
+var cacheOriginContent
+
+function showActivedHost() {
+    if(cacheOriginContent){
+        hostMaster.showActivedHost(cacheOriginContent)
+        return
+    }
+
+    fsp.readFile(HOST_PATH).then(fileContent =>{
+        hostMaster.showActivedHost(fileContent)
+    })
+}
+
+function processParams() {
+    if (argv.name) { // switch host
+
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            var newContent = hostMaster.activeHost(fileContent, argv.name)
+
+            cacheOriginContent = newContent
+
+            return fsp.writeFile(HOST_PATH, newContent)
+        }).then(()=>{
+            showActivedHost()
+        })
+
+    } else if (argv.l) { // show host list
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            cacheOriginContent = fileContent
+            hostMaster.listAllHostName(fileContent)
+            showActivedHost()
+        })
+    }
+}
+
 // showHelp by if has params
-function checkIsWithoutParams() {
+function init() {
     var i,
-        hasNoParams = true
+        noParams = true
 
     for (i in argv) {
         if (/[_$0]/g.test(i)) {
@@ -35,41 +70,18 @@ function checkIsWithoutParams() {
         }
 
         if (argv[i]) {
-            hasNoParams = false
+            noParams = false
             break
         }
     }
 
-    if (hasNoParams) {
+    if (noParams) {
+        showActivedHost()
         yargs.showHelp()
-        process.exit() // exit(1) is error
+        return
     }
+
+    processParams()
 }
 
-function processParams() {
-    if (argv.name) { // switch host
-
-        fsp.readFile(HOST_PATH).then(fileContent =>{
-            var newContent = hostMaster.activeHost(fileContent, argv.name);
-
-            return fsp.writeFile(HOST_PATH, newContent)
-        }).then(()=>{
-            showCurrentHost()
-        })
-
-    } else if (argv.l) { // show host list
-        fsp.readFile(HOST_PATH).then(fileContent =>{
-            hostMaster.listAllHostName(fileContent, argv.name)
-            showCurrentHost()
-        })
-        
-    }
-}
-
-//TODO: before exit show the current hostname
-function showCurrentHost() {
-    console.log('TODO: You\' at', hostMaster.getCurrentHostName(),'now!')
-}
-
-checkIsWithoutParams()
-processParams()
+init()
