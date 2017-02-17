@@ -2,6 +2,8 @@
 
 Change Host just in command line for MAC. Window doesn't support yet.
 
+Inspired by [chrome-hostadmin](https://github.com/tg123/chrome-hostadmin)
+
 ## Installation
 
 > npm install -g chost
