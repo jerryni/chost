@@ -47,28 +47,23 @@ function checkIsWithoutParams() {
 }
 
 function processParams() {
-    var processStr
-
     if (argv.name) { // switch host
-        
-        processStr = fileContent => {
-            return hostMaster.activeHost(fileContent, argv.name)
-        }
+
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            var newContent = hostMaster.activeHost(fileContent, argv.name);
+
+            return fsp.writeFile(HOST_PATH, newContent)
+        }).then(()=>{
+            showCurrentHost()
+        })
 
     } else if (argv.l) { // show host list
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            hostMaster.listAllHostName(fileContent, argv.name)
+            showCurrentHost()
+        })
         
-        processStr = fileContent => {
-            return hostMaster.listAllHostName(fileContent, argv.name)
-        }
     }
-
-    fsp.readFile(HOST_PATH).then(fileContent =>{
-        var newContent = processStr(fileContent);
-
-        return fsp.writeFile(HOST_PATH, newContent)
-    }).then(()=>{
-        showCurrentHost()
-    })
 }
 
 //TODO: before exit show the current hostname

@@ -53,9 +53,11 @@ Then host file content turns to:
 #====
 ```
 
+list all available hostname
+> chost -l
+
 ## TODO
 
-- `chost -l` list all available hostname
 - `chost -c -e localhost` close all host but localhost
 - `chost -c localhost` close certain localhost
 - config host helper (auto config your host file)

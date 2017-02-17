@@ -46,8 +46,15 @@ class HostMaster {
     }
 
     listAllHostName(fileContent){
-        //TODO
-        return 'fileContent'
+        var allHostNameReg = /#=+[\s]*([\d\w]+)/g,
+            matches,
+            allHostNames = []
+
+        while (matches = allHostNameReg.exec(fileContent)) {
+            allHostNames.push(matches[1])
+        }
+
+        console.log(allHostNames.join(','))
     }
     getCurrentHostName(){
         //TODO
