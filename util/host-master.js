@@ -45,7 +45,7 @@ class HostMaster {
             execResult[3])
     }
 
-    listAllHostName(fileContent){
+    getAllHostName(fileContent){
         var allHostNameReg = /#=+[\s]*([\d\w_\u4E00-\u9FFF]+)/g,
             matches,
             allHostNames = []
@@ -54,16 +54,15 @@ class HostMaster {
             allHostNames.push(matches[1])
         }
 
-        console.log('All host name list:\n'+allHostNames.join(','))
+        return allHostNames
     }
-    showActivedHost(fileContent){
+    getActivedHost(fileContent){
         
         var execResult,
             middleContent,
             eachLineArray,
             activedHost = [],
             activeCount = 0,
-            str = '',
             targetSnippetReg = new RegExp('(#=+[\\s]*([\\d\\w\\u4E00-\\u9FFF]+))([^=]+)(#=+)', 'g')
 
         while(execResult = targetSnippetReg.exec(fileContent)){
@@ -90,14 +89,7 @@ class HostMaster {
             }
         }
 
-        if(activedHost.length){
-            activedHost.forEach(item=>{
-                str += `${item.name} (${item.activeCount} lines)\n`
-            })
-            console.log(`Actived host name list:\n${str}`)
-        } else {
-            console.log('There is no actvied host')
-        }
+        return activedHost
     }
 }
 

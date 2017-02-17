@@ -1,4 +1,6 @@
-## chost(change-host)
+![travis](https://travis-ci.org/jerryni/chost.svg?branch=master)
+
+## chost(change-host) 
 
 Change Host just in command line for MAC. Window doesn't support yet.
 
@@ -64,5 +66,4 @@ list all available hostname
 - `chost -c localhost` close certain localhost
 - config host helper (auto config your host file)
 - make hostFilePath configurable
-- unit-test: https://mochajs.org/ like gulp
 - support Window

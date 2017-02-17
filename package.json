@@ -5,14 +5,13 @@
   "repository": "jerryni/chost",
   "author": "jerryni <jerryni2014@gmail.com>",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "host",
     "mac"
   ],
   "preferGlobal": true,
-  
   "bin": {
     "chost": "index.js"
   },
@@ -21,6 +20,7 @@
     "yargs": "^6.6.0"
   },
   "devDependencies": {
-    "eslint": "^3.15.0"
+    "eslint": "^3.15.0",
+    "mocha": "^3.2.0"
   }
 }

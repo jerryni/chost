@@ -3,8 +3,8 @@
 'use strict'
 
 var HOST_PATH = '/private/etc/hosts'
-var hostMaster = require('./util/core')
-var fsp = require('./util/promise-fs.js')
+var hostMaster = require('./util/host-master')
+var fsp = require('./util/promise-fs')
 var yargs = require('yargs')
 var argv = yargs
     .option('name', {
@@ -27,13 +27,25 @@ var argv = yargs
 var cacheOriginContent
 
 function showActivedHost() {
+    function show(activedHost){
+        var str = ''
+        if(activedHost.length){
+            activedHost.forEach(item=>{
+                str += `${item.name} (${item.activeCount} lines)\n`
+            })
+            console.log(`Actived host name list:\n${str}`)
+        } else {
+            console.log('There is no actvied host')
+        }
+    }
+
     if(cacheOriginContent){
-        hostMaster.showActivedHost(cacheOriginContent)
+        show(hostMaster.getActivedHost(cacheOriginContent))
         return
     }
 
     fsp.readFile(HOST_PATH).then(fileContent =>{
-        hostMaster.showActivedHost(fileContent)
+        show(hostMaster.getActivedHost(fileContent))
     })
 }
 
@@ -47,13 +59,16 @@ function processParams() {
 
             return fsp.writeFile(HOST_PATH, newContent)
         }).then(()=>{
+            console.log(`Switch ${argv.name} successfully!`)
             showActivedHost()
         })
 
     } else if (argv.l) { // show host list
         fsp.readFile(HOST_PATH).then(fileContent =>{
+            var allHostNames = hostMaster.getAllHostName(fileContent)
+            console.log('All host name list:\n'+allHostNames.join(','))
+            
             cacheOriginContent = fileContent
-            hostMaster.listAllHostName(fileContent)
             showActivedHost()
         })
     }
