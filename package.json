@@ -1,7 +1,9 @@
 {
   "name": "chost",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Host change tool for mac",
+  "repository": "jerryni/chost",
+  "author": "jerryni <jerryni2014@gmail.com>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +12,7 @@
     "mac"
   ],
   "preferGlobal": true,
-  "author": "jerryni <jerryni2014@gmail.com>",
+  
   "bin": {
     "chost": "index.js"
   },
