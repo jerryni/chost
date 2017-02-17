@@ -5,7 +5,8 @@
   "repository": "jerryni/chost",
   "author": "jerryni <jerryni2014@gmail.com>",
   "scripts": {
-    "test": "mocha"
+    "test": "node ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
+    "coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "keywords": [
     "host",
@@ -20,7 +21,9 @@
     "yargs": "^6.6.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.16",
     "eslint": "^3.15.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0"
   }
 }

@@ -1,3 +1,4 @@
+![npm version](https://img.shields.io/npm/v/chost.svg)
 ![travis](https://travis-ci.org/jerryni/chost.svg?branch=master)
 
 ## chost(change-host) 
