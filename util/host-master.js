@@ -20,7 +20,8 @@ class HostMaster {
             提取出middleContent: xxx
             然后遍历xxx，将xxx开头的#去掉之后，再拼接起来替换回去
          */
-        targetSnippetReg = new RegExp('(#=+[\\s]*' + hostName + ')([^=]+)(#=+)', 'g')
+        
+        targetSnippetReg = new RegExp('(#=+[\\s]*' + hostName + '\\b)([^=]+)(#=+)', 'g')
         execResult = targetSnippetReg.exec(fileContent)
         if (!execResult || !execResult[2]) throw 'Do not have this host'
 
