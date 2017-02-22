@@ -1,6 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jerryni/chost/badge.svg?branch=master)](https://coveralls.io/github/jerryni/chost?branch=master)
 ![npm version](https://img.shields.io/npm/v/chost.svg)
 ![travis](https://travis-ci.org/jerryni/chost.svg?branch=master)
+[![npm](https://img.shields.io/npm/dm/chost.svg)](https://www.npmjs.com/package/chost)
 
 ## chost(change-host) 
 
@@ -66,10 +67,12 @@ Then host file content turns to:
 list all available hostname
 > chost -l
 
+close certain host by hostname:
+> chost -c stable_dev
+
 ## TODO
 
 - `chost -c -e localhost` close all host but localhost
-- `chost -c localhost` close certain localhost
 - config host helper (auto config your host file)
 - make hostFilePath configurable
 - support Window

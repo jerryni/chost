@@ -59,4 +59,30 @@ describe('HostMaster', function() {
       assert.deepEqual([{name: 'stable_master', activeCount: 1}], hostMaster.getActivedHost(origin))
     })
   })
+
+  describe('closeHost', function() {
+    var origin = `#==== stable_master
+10.165.124.255  www.xx.com
+10.165.124.255  www.xx.com.hk
+#====
+
+#==== stable_dev
+#10.165.124.255  www.xx.com
+#10.165.124.255  www.xx.com.hk
+#====`
+
+var target = `#==== stable_master
+#10.165.124.255  www.xx.com
+#10.165.124.255  www.xx.com.hk
+#====
+
+#==== stable_dev
+#10.165.124.255  www.xx.com
+#10.165.124.255  www.xx.com.hk
+#====`
+
+    it('close stable_master', function() {
+      assert.equal(target, hostMaster.closeHost(origin, 'stable_master'))
+    })
+  })
 })

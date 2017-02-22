@@ -2,6 +2,13 @@
 
 class HostMaster {
     constructor() {}
+
+    
+    getCertainHostReg(hostName){
+        hostName = hostName || ''
+
+        return new RegExp('(#=+[\\s]*' + hostName + '[\\s\\n\\r]+)([^=]+)(#=+)', 'g')
+    }
     
     /**
      * Active host by hostName
@@ -21,7 +28,7 @@ class HostMaster {
             然后遍历xxx，将xxx开头的#去掉之后，再拼接起来替换回去
          */
         
-        targetSnippetReg = new RegExp('(#=+[\\s]*' + hostName + '\\b)([^=]+)(#=+)', 'g')
+        targetSnippetReg = this.getCertainHostReg(hostName)
         execResult = targetSnippetReg.exec(fileContent)
         if (!execResult || !execResult[2]) throw 'Do not have this host'
 
@@ -32,6 +39,7 @@ class HostMaster {
             .map(item => item.trim())
             .filter(item => !!item)
 
+        // comment all other same-ip lines
         eachLineArray.forEach((item) => {
             var domain = /[\d\.\s]+([\w\.]+)/g.exec(item)[1]
             var ipReg = new RegExp('^((?![\\r\\n])[\\d\\.\\s]{10,})' + domain, 'gm')
@@ -39,6 +47,29 @@ class HostMaster {
             ipReg.lastIndex = 0
             fileContent = fileContent.replace(ipReg, '#$1' + domain)
         })
+
+        targetSnippetReg.lastIndex = 0
+        return fileContent.replace(targetSnippetReg, execResult[1] +
+            middleContent +
+            execResult[3])
+    }
+
+    closeHost(fileContent, hostName){
+        var targetSnippetReg = this.getCertainHostReg(hostName),
+            execResult,
+            middleContent
+
+        execResult = targetSnippetReg.exec(fileContent)
+        if (!execResult || !execResult[2]) throw 'Do not have this host'
+
+        middleContent = execResult[2].replace(/[#]/g, '')
+
+        // clear all # and add # back to the head
+        middleContent= middleContent.split(/[\r\n]/)
+            .map(item => item.trim())
+            .filter(item => !!item)
+            .map(item => '#' + item)
+            .join('\n') + '\n'
 
         targetSnippetReg.lastIndex = 0
         return fileContent.replace(targetSnippetReg, execResult[1] +

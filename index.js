@@ -18,7 +18,14 @@ var argv = yargs
         describe: 'Show hostName list',
         alias: 'l'
     })
-    .example('chost -n localhost', 'now you\'re at localhost')
+    .option('close', {
+        type: 'string',
+        describe: 'close certain host',
+        alias: 'c'
+    })
+    .example('chost -n localhost', 'Switch localhost successfully!')
+    .example('chost -c localhost', 'Close localhost successfully!')
+    .example('chost -l', 'All host name list: xxx')
     .help('h')
     .alias('h', 'help')
     .epilog('copyright 2017')
@@ -69,6 +76,16 @@ function processParams() {
             console.log('All host name list:\n'+allHostNames.join(','))
             
             cacheOriginContent = fileContent
+            showActivedHost()
+        })
+    } else if (argv.c){
+
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            var newContent = hostMaster.closeHost(fileContent,argv.c)
+
+            return fsp.writeFile(HOST_PATH, newContent)
+        }).then(()=>{
+            console.log(`Close ${argv.c} successfully!`)
             showActivedHost()
         })
     }
