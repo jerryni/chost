@@ -2,7 +2,6 @@
 
 'use strict'
 
-var HOST_PATH = '/private/etc/hosts'
 var hostMaster = require('./util/host-master')
 var fsp = require('./util/promise-fs')
 var yargs = require('yargs')
@@ -31,7 +30,15 @@ var argv = yargs
     .epilog('copyright 2017')
     .argv
 
-var cacheOriginContent
+var cacheOriginContent,
+    HOST_PATH,
+    isWin = /^win/.test(process.platform)
+
+if(isWin){
+    HOST_PATH = 'C:\Windows\System32\drivers\etc'
+} else {
+    HOST_PATH = '/private/etc/hosts'
+}
 
 function showActivedHost() {
     function show(activedHost){

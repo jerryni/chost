@@ -5,7 +5,7 @@
 
 ## chost(change-host) 
 
-Change Host just in command line for MAC. Window doesn't support yet.
+Change Host just in command line
 
 Inspired by [chrome-hostadmin](https://github.com/tg123/chrome-hostadmin)
 
@@ -69,10 +69,3 @@ list all available hostname
 
 close certain host by hostname:
 > chost -c stable_dev
-
-## TODO
-
-- `chost -c -e localhost` close all host but localhost
-- config host helper (auto config your host file)
-- make hostFilePath configurable
-- support Window
