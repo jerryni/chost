@@ -5,7 +5,7 @@
 
 ## chost(change-host) 
 
-Change Host just in command line
+Change Host just in command line for **MAC OS**. 
 
 Inspired by [chrome-hostadmin](https://github.com/tg123/chrome-hostadmin)
 
