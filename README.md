@@ -1,5 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/jerryni/chost/badge.svg?branch=master)](https://coveralls.io/github/jerryni/chost?branch=master)
-![npm version](https://img.shields.io/npm/v/chost.svg)
+[![npm version](https://img.shields.io/npm/v/chost.svg)](https://www.npmjs.com/package/chost)
 ![travis](https://travis-ci.org/jerryni/chost.svg?branch=master)
 [![npm](https://img.shields.io/npm/dm/chost.svg)](https://www.npmjs.com/package/chost)
 

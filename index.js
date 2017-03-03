@@ -4,6 +4,7 @@
 
 var hostMaster = require('./util/host-master')
 var fsp = require('./util/promise-fs')
+var chalk = require('chalk')
 var yargs = require('yargs')
 var argv = yargs
     .option('name', {
@@ -44,12 +45,14 @@ function showActivedHost() {
     function show(activedHost){
         var str = ''
         if(activedHost.length){
+            str += chalk.yellow('Actived host name list:\n')
             activedHost.forEach(item=>{
                 str += `${item.name} (${item.activeCount} lines)\n`
             })
-            console.log(`Actived host name list:\n${str}`)
+
+            console.log(str)
         } else {
-            console.log('There is no actvied host')
+            console.log(chalk.red('There is no actvied host'))
         }
     }
 
@@ -73,14 +76,14 @@ function processParams() {
 
             return fsp.writeFile(HOST_PATH, newContent)
         }).then(()=>{
-            console.log(`Switch ${argv.name} successfully!`)
+            console.log(chalk.green(`Switch ${argv.name} successfully!`))
             showActivedHost()
         })
 
     } else if (argv.l) { // show host list
         fsp.readFile(HOST_PATH).then(fileContent =>{
             var allHostNames = hostMaster.getAllHostName(fileContent)
-            console.log('All host name list:\n'+allHostNames.join(','))
+            console.log(chalk.yellow('All host name list:\n') + allHostNames.join(','))
             
             cacheOriginContent = fileContent
             showActivedHost()
@@ -92,7 +95,7 @@ function processParams() {
 
             return fsp.writeFile(HOST_PATH, newContent)
         }).then(()=>{
-            console.log(`Close ${argv.c} successfully!`)
+            console.log(chalk.green(`Close ${argv.c} successfully!`))
             showActivedHost()
         })
     }
