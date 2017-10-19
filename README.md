@@ -69,3 +69,12 @@ list all available hostname
 
 close certain host by hostname:
 > chost -c stable_dev
+
+Close all hosts
+> chost -q
+
+## Develop
+
+1. git clone this project to your local.
+2. run `npm link` at root directory.
+3. The enter file is `index.js`. You can make some change in it,  while running `chost` command without any publishing to see your change.

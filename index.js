@@ -18,6 +18,12 @@ var argv = yargs
         describe: 'Show hostName list',
         alias: 'l'
     })
+    .option('closeAll', {
+        boolean: true,
+        default: false,
+        describe: 'Close all hosts',
+        alias: 'q'
+    })
     .option('close', {
         type: 'string',
         describe: 'close certain host',
@@ -25,6 +31,7 @@ var argv = yargs
     })
     .example('chost -n localhost', 'Switch localhost successfully!')
     .example('chost -c localhost', 'Close localhost successfully!')
+    .example('chost -q', 'Close all hosts successfully!')
     .example('chost -l', 'All host name list: xxx')
     .help('h')
     .alias('h', 'help')
@@ -96,6 +103,15 @@ function processParams() {
             return fsp.writeFile(HOST_PATH, newContent)
         }).then(()=>{
             console.log(chalk.green(`Close ${argv.c} successfully!`))
+            showActivedHost()
+        })
+    }  else if (argv.q){
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            var newContent = hostMaster.closeAllHost(fileContent)
+
+            return fsp.writeFile(HOST_PATH, newContent)
+        }).then(()=>{
+            console.log(chalk.green(`Close all hosts successfully!`))
             showActivedHost()
         })
     }

@@ -78,7 +78,7 @@ class HostMaster {
     }
 
     getAllHostName(fileContent){
-        var allHostNameReg = /#=+[\s]*([\d\w_\u4E00-\u9FFF]+)/g,
+        var allHostNameReg = /#=+[\s]?([\d\w_\-\u4E00-\u9FFF]+)/g,
             matches,
             allHostNames = []
 
@@ -122,6 +122,19 @@ class HostMaster {
         }
 
         return activedHost
+    }
+    closeAllHost(fileContent) {
+        try {
+            var allHostName = this.getAllHostName(fileContent)
+            allHostName.forEach(hostName => {
+                // console.log(hostName)
+                fileContent = this.closeHost(fileContent, hostName)
+            })
+
+            return fileContent
+        } catch(e) {
+            console.log('closeAllHost:', e)
+        }
     }
 }
 
