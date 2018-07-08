@@ -1,21 +1,14 @@
-'use strict'
-const chalk = require('chalk')
 const fsp = require('../util/promise-fs')
 const { HOST_PATH } = require('./constant')
-const log = console.log
+const log = require('./log')
+
 class HostMaster {
     showActivedHost(fileContent) {
-        function show(activedHost){
-            let str = ''
-            if(activedHost.length){
-                str += chalk.yellow('Actived host name list:\n')
-                activedHost.forEach(item=>{
-                    str += `${item.name} (${item.activeCount} lines)\n`
-                })
-
-                log(str)
+        function show(hosts){
+            if(hosts.length){
+                log.activedHosts(hosts)
             } else {
-                log(chalk.red('There is no actvied host'))
+                log.noActviedHost()
             }
         }
 
@@ -152,13 +145,12 @@ class HostMaster {
         try {
             var allHostName = this.getAllHostName(fileContent)
             allHostName.forEach(hostName => {
-                // console.log(hostName)
                 fileContent = this.closeHost(fileContent, hostName)
             })
 
             return fileContent
         } catch(e) {
-            console.log('closeAllHost:', e)
+            log.catch(e)
         }
     }
 }

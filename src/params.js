@@ -1,8 +1,7 @@
-const chalk = require('chalk')
 const fsp = require('../util/promise-fs')
 const { HOST_PATH } = require('./constant')
 const hostMaster = require('./host-master')
-const log = console.log
+const log = require('./log')
 let fileContentCache
 
 module.exports = {
@@ -16,15 +15,13 @@ module.exports = {
 
                 return fsp.writeFile(HOST_PATH, newContent)
             }).then(() => {
-                log(chalk.green(`Switch ${argv.name} successfully!`))
+                log.activeHost(argv.name)
                 hostMaster.showActivedHost(fileContentCache)
             })
 
         } else if (argv.l) { // show host list
             fsp.readFile(HOST_PATH).then(fileContent => {
-                let allHostNames = hostMaster.getAllHostName(fileContent)
-                log(chalk.yellow('All host name list:\n') + allHostNames.join(','))
-
+                log.allHosts(hostMaster.getAllHostName(fileContent))
                 fileContentCache = fileContent
                 hostMaster.showActivedHost(fileContentCache)
             })
@@ -35,7 +32,7 @@ module.exports = {
 
                 return fsp.writeFile(HOST_PATH, newContent)
             }).then(() => {
-                log(chalk.green(`Close ${argv.c} successfully!`))
+                log.closeHost(argv.c)
                 hostMaster.showActivedHost(fileContentCache)
             })
         } else if (argv.q) {
@@ -44,7 +41,7 @@ module.exports = {
 
                 return fsp.writeFile(HOST_PATH, newContent)
             }).then(() => {
-                log(chalk.green('Close all hosts successfully!'))
+                log.closeAllHost()
                 hostMaster.showActivedHost(fileContentCache)
             })
         }
