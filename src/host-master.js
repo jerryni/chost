@@ -1,5 +1,4 @@
-const fsp = require('../util/promise-fs')
-const { HOST_PATH } = require('./constant')
+const hostFs = require('./host-fs')
 const log = require('./log')
 
 class HostMaster {
@@ -17,7 +16,7 @@ class HostMaster {
             return
         }
 
-        fsp.readFile(HOST_PATH).then(fileContent =>{
+        hostFs.readHost().then(fileContent =>{
             show(this.getActivedHost(fileContent))
         })
     }
