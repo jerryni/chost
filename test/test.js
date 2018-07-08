@@ -1,5 +1,5 @@
 var assert = require('assert')
-var hostMaster = require('../util/host-master')
+var hostMaster = require('../src/host-master')
 
 describe('HostMaster', function() {
   describe('activeHost', function() {
