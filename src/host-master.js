@@ -1,19 +1,44 @@
 'use strict'
-
+const chalk = require('chalk')
+const fsp = require('../util/promise-fs')
+const { HOST_PATH } = require('./constant')
+const log = console.log
 class HostMaster {
-    constructor() {}
+    showActivedHost(fileContent) {
+        function show(activedHost){
+            let str = ''
+            if(activedHost.length){
+                str += chalk.yellow('Actived host name list:\n')
+                activedHost.forEach(item=>{
+                    str += `${item.name} (${item.activeCount} lines)\n`
+                })
 
-    
+                log(str)
+            } else {
+                log(chalk.red('There is no actvied host'))
+            }
+        }
+
+        if(fileContent){
+            show(this.getActivedHost(fileContent))
+            return
+        }
+
+        fsp.readFile(HOST_PATH).then(fileContent =>{
+            show(this.getActivedHost(fileContent))
+        })
+    }
+
     getCertainHostReg(hostName){
         hostName = hostName || ''
 
         return new RegExp('(#=+[\\s]*' + hostName + '[\\s\\n\\r]+)([^=]+)(#=+)', 'g')
     }
-    
+
     /**
      * Active host by hostName
      * @param  {String} fileContent
-     * @param  {String} name 
+     * @param  {String} name
      * @return {String}
      */
     activeHost(fileContent, hostName) {
@@ -27,7 +52,7 @@ class HostMaster {
             提取出middleContent: xxx
             然后遍历xxx，将xxx开头的#去掉之后，再拼接起来替换回去
          */
-        
+
         targetSnippetReg = this.getCertainHostReg(hostName)
         execResult = targetSnippetReg.exec(fileContent)
         if (!execResult || !execResult[2]) throw 'Do not have this host'
@@ -89,7 +114,7 @@ class HostMaster {
         return allHostNames
     }
     getActivedHost(fileContent){
-        
+
         var execResult,
             middleContent,
             eachLineArray,
