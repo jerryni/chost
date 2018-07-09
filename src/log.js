@@ -3,7 +3,7 @@ const log = console.log
 
 module.exports = {
     activedHosts(hosts) {
-        log(chalk.yellow('Actived host name list:\n'),
+        log(chalk.yellow('Actived hosts:\n'),
             hosts.map(host => {
                 return `${host.name} (${host.activeCount} lines)\n`
             }).join('')
@@ -19,7 +19,7 @@ module.exports = {
     },
 
     allHosts(hosts) {
-        log(chalk.yellow('All host name list:\n') + hosts.join(','))
+        log(chalk.yellow('All hosts:\n') + hosts.join(','))
     },
 
     closeHost(host) {

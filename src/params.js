@@ -1,48 +1,14 @@
 const hostMaster = require('./host-master')
-const log = require('./log')
-const hostFs = require('./host-fs')
-let fileContentCache
-
 module.exports = {
     handleParams(argv) {
-        if (argv.name) { // switch host
-
-            hostFs.readHost().then(fileContent => {
-                let newContent = hostMaster.activeHost(fileContent, argv.name)
-
-                fileContentCache = newContent
-
-                return hostFs.writeHost(newContent)
-            }).then(() => {
-                log.activeHost(argv.name)
-                hostMaster.showActivedHost(fileContentCache)
-            })
-
-        } else if (argv.l) { // show host list
-            hostFs.readHost().then(fileContent => {
-                log.allHosts(hostMaster.getAllHostName(fileContent))
-                fileContentCache = fileContent
-                hostMaster.showActivedHost(fileContentCache)
-            })
+        if (argv.name) {
+            hostMaster.activeHost(argv.name)
+        } else if (argv.l) {
+            hostMaster.listAllHosts()
         } else if (argv.c) {
-
-            hostFs.readHost().then(fileContent => {
-                let newContent = hostMaster.closeHost(fileContent, argv.c)
-
-                return hostFs.writeHost(newContent)
-            }).then(() => {
-                log.closeHost(argv.c)
-                hostMaster.showActivedHost(fileContentCache)
-            })
+            hostMaster.closeHost(argv.c)
         } else if (argv.q) {
-            hostFs.readHost().then(fileContent => {
-                let newContent = hostMaster.closeAllHost(fileContent)
-
-                return hostFs.writeHost(newContent)
-            }).then(() => {
-                log.closeAllHost()
-                hostMaster.showActivedHost(fileContentCache)
-            })
+            hostMaster.closeAllHosts()
         }
     },
 

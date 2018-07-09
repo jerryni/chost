@@ -12,4 +12,12 @@ module.exports = {
             writeFile(HOST_PATH, newContent).then(fileContent => resolve(fileContent))
         })
     },
+
+    readAndWrite(handle) {
+        return this.readHost().then(content => {
+            return handle(content)
+        }).then(newContent => {
+            return this.writeHost(newContent)
+        })
+    }
 }
