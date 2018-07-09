@@ -1,5 +1,5 @@
 var assert = require('assert')
-var hostMaster = require('../src/host-master')
+var contProcess = require('../src/cont-process')
 
 describe('HostMaster', function() {
   describe('activeHost', function() {
@@ -24,7 +24,7 @@ describe('HostMaster', function() {
 #====`
 
     it('active stable_dev and comment stable_master', function() {
-      assert.equal(target, hostMaster.activeHost(origin, 'stable_dev'))
+      assert.equal(target, contProcess.activeHost(origin, 'stable_dev'))
     })
   })
 
@@ -40,7 +40,7 @@ describe('HostMaster', function() {
 #====`
 
     it('it should be ["stable_master", "stable_dev"]', function() {
-      assert.deepEqual([ 'stable_master', 'stable_dev' ], hostMaster.getAllHostName(origin))
+      assert.deepEqual([ 'stable_master', 'stable_dev' ], contProcess.getAllHostName(origin))
     })
   })
 
@@ -56,7 +56,7 @@ describe('HostMaster', function() {
 #====`
 
     it('actived host', function() {
-      assert.deepEqual([{name: 'stable_master', activeCount: 1}], hostMaster.getActivedHost(origin))
+      assert.deepEqual([{name: 'stable_master', activeCount: 1}], contProcess.getActivedHost(origin))
     })
   })
 
@@ -82,7 +82,7 @@ var target = `#==== stable_master
 #====`
 
     it('close stable_master', function() {
-      assert.equal(target, hostMaster.closeHost(origin, 'stable_master'))
+      assert.equal(target, contProcess.closeHost(origin, 'stable_master'))
     })
   })
 })
