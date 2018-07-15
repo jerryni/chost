@@ -2,52 +2,50 @@ const log = require('./log')
 
 module.exports = {
 
-    getCertainHostReg(hostName){
+    getRegByHost(hostName){
         hostName = hostName || ''
 
         return new RegExp('(#=+[\\s]*' + hostName + '[\\s\\n\\r]+)([^=]+)(#=+)', 'g')
     },
 
+    getIpRegWithDomain(domain) {
+        return new RegExp('^((?![\\r\\n])[\\d\\.\\s]{10,})' + domain, 'gm')
+    },
+
+    getDomainReg() {
+        return /[\d\.\s]+([\w\.]+)/g
+    },
+
+    /*
+        1. get snippet like '#=== hostName content #=== '
+        2. content.replace('#', '')
+        3. comment other lines of same-ip
+    */
     activeHost(fileContent, hostName) {
-        var targetSnippetReg,
-            middleContent,
-            eachLineArray,
-            execResult
+        let hostReg = this.getRegByHost(hostName)
+        let [, startToken, hostLines, EndToken] = hostReg.exec(fileContent)
 
-        /*
-            找到#=== hostName xxx #===这样的片段
-            提取出middleContent: xxx
-            然后遍历xxx，将xxx开头的#去掉之后，再拼接起来替换回去
-         */
+        if (!hostLines) throw 'Do not have this host'
 
-        targetSnippetReg = this.getCertainHostReg(hostName)
-        execResult = targetSnippetReg.exec(fileContent)
-        if (!execResult || !execResult[2]) throw 'Do not have this host'
+        hostLines = hostLines.replace(/[#]/g, '')
+        hostLines
+            .split(/[\r\n]/)
+            .forEach(line => {
+                if (!line || !line.trim()) {
+                    return
+                }
 
-        middleContent = execResult[2].replace(/[#]/g, '')
+                let [, domain] = this.getDomainReg().exec(line.trim())
+                let ipReg = this.getIpRegWithDomain(domain)
+                fileContent = fileContent.replace(ipReg, '#$1' + domain)
+            })
 
-        //把middleContent中的每一行都提取出来，匹配出文件中未注释的注释掉
-        eachLineArray = middleContent.split(/[\r\n]/)
-            .map(item => item.trim())
-            .filter(item => !!item)
-
-        // comment all other same-ip lines
-        eachLineArray.forEach((item) => {
-            var domain = /[\d\.\s]+([\w\.]+)/g.exec(item)[1]
-            var ipReg = new RegExp('^((?![\\r\\n])[\\d\\.\\s]{10,})' + domain, 'gm')
-
-            ipReg.lastIndex = 0
-            fileContent = fileContent.replace(ipReg, '#$1' + domain)
-        })
-
-        targetSnippetReg.lastIndex = 0
-        return fileContent.replace(targetSnippetReg, execResult[1] +
-            middleContent +
-            execResult[3])
+        return fileContent.replace(hostReg,
+            startToken + hostLines + EndToken)
     },
 
     closeHost(fileContent, hostName){
-        var targetSnippetReg = this.getCertainHostReg(hostName),
+        var targetSnippetReg = this.getRegByHost(hostName),
             execResult,
             middleContent
 
