@@ -1,6 +1,6 @@
-let yargs = require('yargs')
+import * as yargs from 'yargs';
 
-module.exports = yargs.option('name', {
+export default yargs.option('name', {
     type: 'string',
     describe: '[hostName] Switch host by name',
     alias: 'n'

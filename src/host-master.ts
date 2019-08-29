@@ -1,6 +1,6 @@
-const contProcess = require('./cont-process')
-const hostFs = require('./host-fs')
-const log = require('./log')
+import contProcess from './cont-process';
+import hostFs from './host-fs';
+import log from './log';
 
 class HostMaster {
     showActivedHost(fileContent) {
@@ -57,4 +57,4 @@ class HostMaster {
     }
 }
 
-module.exports = new HostMaster()
+export default new HostMaster()

@@ -1,7 +1,7 @@
-const chalk = require('chalk')
-const log = console.log
+import * as chalk from 'chalk';
 
-module.exports = {
+let log = console.log;
+export default {
     activedHosts(hosts) {
         log(chalk.yellow('Actived hosts:\n'),
             hosts.map(host => {

@@ -1,6 +1,6 @@
-const log = require('./log')
+import log from './log';
 
-module.exports = {
+export default {
 
     getRegByHost(hostName){
         hostName = hostName || ''

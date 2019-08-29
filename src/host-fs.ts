@@ -1,7 +1,7 @@
-const { HOST_PATH } = require('./constant')
-const { readFile, writeFile } = require('../util/promise-fs')
+import { HOST_PATH } from './constant';
+import { readFile, writeFile } from '../util/promise-fs';
 
-module.exports = {
+export default {
     readHost() {
         return new Promise(resolve => {
             readFile(HOST_PATH).then(fileContent => resolve(fileContent))
