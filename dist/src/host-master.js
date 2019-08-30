@@ -1,63 +1,67 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var cont_process_1 = require("./cont-process");
-var host_fs_1 = require("./host-fs");
-var log_1 = require("./log");
-var HostMaster = /** @class */ (function () {
-    function HostMaster() {
-    }
-    HostMaster.prototype.showActivedHost = function (fileContent) {
-        function show(hosts) {
-            if (hosts.length) {
-                log_1.default.activedHosts(hosts);
+const cont_process_1 = require("./cont-process");
+const host_fs_1 = require("./host-fs");
+const log_1 = require("./log");
+class HostMaster {
+    showActivedHost(hostContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let activeHostList = [];
+            if (!hostContent) {
+                hostContent = yield host_fs_1.default.readHost();
+            }
+            activeHostList = cont_process_1.default.getActivedHost(hostContent);
+            if (activeHostList.length) {
+                log_1.default.activedHosts(activeHostList);
             }
             else {
                 log_1.default.noActviedHost();
             }
-        }
-        if (fileContent) {
-            show(cont_process_1.default.getActivedHost(fileContent));
-            return;
-        }
-        host_fs_1.default.readHost().then(function (content) {
-            show(cont_process_1.default.getActivedHost(content));
         });
-    };
-    HostMaster.prototype.activeHost = function (host) {
-        var _this = this;
-        host_fs_1.default.readAndWrite(function (fileContent) {
-            return cont_process_1.default.activeHost(fileContent, host);
-        }).then(function (newContent) {
-            log_1.default.activeHost(host);
-            _this.showActivedHost(newContent);
+    }
+    activeHost(hostName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hostContent = yield host_fs_1.default.readHost();
+            const newHostContent = cont_process_1.default.activeHost(hostContent, hostName);
+            yield host_fs_1.default.writeHost(newHostContent);
+            log_1.default.activeHost(hostName);
+            return newHostContent;
         });
-    };
-    HostMaster.prototype.listAllHosts = function () {
-        var _this = this;
-        host_fs_1.default.readHost().then(function (fileContent) {
-            log_1.default.allHosts(cont_process_1.default.getAllHostName(fileContent));
-            _this.showActivedHost(fileContent);
+    }
+    listAllHosts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hostContent = yield host_fs_1.default.readHost();
+            const hostNameList = cont_process_1.default.getAllHostName(hostContent);
+            log_1.default.allHosts(hostNameList);
+            return hostContent;
         });
-    };
-    HostMaster.prototype.closeHost = function (host) {
-        var _this = this;
-        host_fs_1.default.readAndWrite(function (fileContent) {
-            return cont_process_1.default.closeHost(fileContent, host);
-        }).then(function (newContent) {
-            log_1.default.closeHost(host);
-            _this.showActivedHost(newContent);
+    }
+    closeHost(hostName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hostContent = yield host_fs_1.default.readHost();
+            const newHostContent = cont_process_1.default.closeHost(hostContent, hostName);
+            log_1.default.closeHost(hostName);
+            return newHostContent;
         });
-    };
-    HostMaster.prototype.closeAllHosts = function () {
-        var _this = this;
-        host_fs_1.default.readAndWrite(function (fileContent) {
-            return cont_process_1.default.closeAllHost(fileContent);
-        }).then(function (newContent) {
+    }
+    closeAllHosts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hostContent = yield host_fs_1.default.readHost();
+            const newHostContent = cont_process_1.default.closeAllHost(hostContent);
+            yield host_fs_1.default.writeHost(newHostContent);
             log_1.default.closeAllHost();
-            _this.showActivedHost(newContent);
+            return newHostContent;
         });
-    };
-    return HostMaster;
-}());
+    }
+}
 exports.default = new HostMaster();
 //# sourceMappingURL=host-master.js.map

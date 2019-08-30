@@ -2,12 +2,12 @@
 
 'use strict'
 
-import yargs from 'yargs'
+import * as yargs from 'yargs'
 import hostMaster from './src/host-master'
 import argv from './src/argv'
 import { hasParams, handleParams } from './src/params'
 
-function main() {
+async function main() {
     const hasParam = hasParams(argv)
 
     if( !hasParam ) {
@@ -16,7 +16,7 @@ function main() {
         process.exit()
     }
 
-    handleParams(argv)
+    await handleParams(argv)
 }
 
 main();

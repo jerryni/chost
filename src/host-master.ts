@@ -3,57 +3,55 @@ import hostFs from './host-fs';
 import log from './log';
 
 class HostMaster {
-    showActivedHost(fileContent) {
-        function show(hosts){
-            if(hosts.length){
-                log.activedHosts(hosts)
-            } else {
-                log.noActviedHost()
-            }
+    async showActivedHost(hostContent: string): Promise<void> {
+        let activeHostList = [];
+
+        if (!hostContent) {
+          hostContent = await hostFs.readHost()
         }
 
-        if(fileContent){
-            show(contProcess.getActivedHost(fileContent))
-            return
+        activeHostList = contProcess.getActivedHost(hostContent);
+
+        if(activeHostList.length) {
+            log.activedHosts(activeHostList)
+        } else {
+            log.noActviedHost()
         }
-
-        hostFs.readHost().then(content =>{
-            show(contProcess.getActivedHost(content))
-        })
     }
 
-    activeHost(host) {
-        hostFs.readAndWrite(fileContent => {
-            return contProcess.activeHost(fileContent, host)
-        }).then((newContent) => {
-            log.activeHost(host)
-            this.showActivedHost(newContent)
-        })
+    async activeHost(hostName: string): Promise<string> {
+        const hostContent = await hostFs.readHost();
+        const newHostContent = contProcess.activeHost(hostContent, hostName);
+        await hostFs.writeHost(newHostContent);
+
+        log.activeHost(hostName)
+
+        return newHostContent;
     }
 
-    listAllHosts() {
-        hostFs.readHost().then(fileContent => {
-            log.allHosts(contProcess.getAllHostName(fileContent))
-            this.showActivedHost(fileContent)
-        })
+    async listAllHosts(): Promise<string> {
+        const hostContent = await hostFs.readHost();
+        const hostNameList = contProcess.getAllHostName(hostContent);
+
+        log.allHosts(hostNameList);
+        return hostContent;
     }
 
-    closeHost(host) {
-        hostFs.readAndWrite(fileContent => {
-            return contProcess.closeHost(fileContent, host)
-        }).then((newContent) => {
-            log.closeHost(host)
-            this.showActivedHost(newContent)
-        })
+    async closeHost(hostName): Promise<string> {
+        const hostContent = await hostFs.readHost();
+        const newHostContent = contProcess.closeHost(hostContent, hostName);
+
+        log.closeHost(hostName)
+        return newHostContent;
     }
 
-    closeAllHosts() {
-        hostFs.readAndWrite(fileContent => {
-            return contProcess.closeAllHost(fileContent)
-        }).then((newContent) => {
-            log.closeAllHost()
-            this.showActivedHost(newContent)
-        })
+    async closeAllHosts(): Promise<string> {
+        const hostContent = await hostFs.readHost();
+        const newHostContent = contProcess.closeAllHost(hostContent);
+        await hostFs.writeHost(newHostContent);
+
+        log.closeAllHost()
+        return newHostContent
     }
 }
 

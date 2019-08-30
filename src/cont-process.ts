@@ -2,17 +2,17 @@ import log from './log';
 
 export default {
 
-    getRegByHost(hostName){
+    getRegByHost(hostName:string){
         hostName = hostName || ''
 
         return new RegExp('(#=+[\\s]*' + hostName + '[\\s\\n\\r]+)([^=]+)(#=+)', 'g')
     },
 
-    getIpRegWithDomain(domain) {
+    getIpRegWithDomain(domain:string) {
         return new RegExp('^((?![\\r\\n])[\\d\\.\\s]{10,})' + domain, 'gm')
     },
 
-    getDomainReg() {
+    getDomainReg(): RegExp {
         return /[\d\.\s]+([\w\.]+)/g
     },
 
@@ -21,7 +21,7 @@ export default {
         2. content.replace('#', '')
         3. comment other lines of same-ip
     */
-    activeHost(fileContent, hostName) {
+    activeHost(fileContent: string, hostName: string): string {
         let hostReg = this.getRegByHost(hostName)
         let [, startToken, hostLines, EndToken] = hostReg.exec(fileContent)
 
@@ -44,8 +44,8 @@ export default {
             startToken + hostLines + EndToken)
     },
 
-    closeHost(fileContent, hostName){
-        var targetSnippetReg = this.getRegByHost(hostName),
+    closeHost(fileContent:string, hostName:string) {
+        let targetSnippetReg = this.getRegByHost(hostName),
             execResult,
             middleContent
 
@@ -67,8 +67,8 @@ export default {
             execResult[3])
     },
 
-    getAllHostName(fileContent){
-        var allHostNameReg = /#=+[\s]?([\d\w_\-\u4E00-\u9FFF]+)/g,
+    getAllHostName(fileContent:string) {
+        let allHostNameReg = /#=+[\s]?([\d\w_\-\u4E00-\u9FFF]+)/g,
             matches,
             allHostNames = []
 
@@ -79,9 +79,8 @@ export default {
         return allHostNames
     },
 
-    getActivedHost(fileContent){
-
-        var execResult,
+    getActivedHost(fileContent: string): any[] {
+        let execResult,
             middleContent,
             eachLineArray,
             activedHost = [],
@@ -114,7 +113,8 @@ export default {
 
         return activedHost
     },
-    closeAllHost(fileContent) {
+
+    closeAllHost(fileContent): string {
         try {
             var allHostName = this.getAllHostName(fileContent)
             allHostName.forEach(hostName => {
@@ -124,6 +124,7 @@ export default {
             return fileContent
         } catch(e) {
             log.catch(e)
+            return ''
         }
     }
 }

@@ -28,5 +28,5 @@ export default yargs.option('name', {
 .example('chost -l', 'All host name list: xxx')
 .help('h')
 .alias('h', 'help')
-.epilog('copyright 2017')
+.epilog('copyright 2019')
 .argv

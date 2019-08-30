@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var yargs = require("yargs");
+const yargs = require("yargs");
 exports.default = yargs.option('name', {
     type: 'string',
     describe: '[hostName] Switch host by name',
@@ -29,6 +29,6 @@ exports.default = yargs.option('name', {
     .example('chost -l', 'All host name list: xxx')
     .help('h')
     .alias('h', 'help')
-    .epilog('copyright 2017')
+    .epilog('copyright 2019')
     .argv;
 //# sourceMappingURL=argv.js.map

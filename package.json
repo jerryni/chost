@@ -6,6 +6,7 @@
   "author": "jerryni <jerryni2014@gmail.com>",
   "scripts": {
     "build": "tsc",
+    "dev": "tsc -w",
     "test": "node ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
     "coverage": "cat ./coverage/lcov.info | coveralls"
   },

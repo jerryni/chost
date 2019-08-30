@@ -1,29 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var chalk = require("chalk");
-var log = console.log;
+const chalk = require("chalk");
+let log = console.log;
 exports.default = {
-    activedHosts: function (hosts) {
-        log(chalk.yellow('Actived hosts:\n'), hosts.map(function (host) {
-            return host.name + " (" + host.activeCount + " lines)\n";
+    activedHosts(hosts) {
+        log(chalk.yellow('Actived hosts:\n'), hosts.map(host => {
+            return `${host.name} (${host.activeCount} lines)\n`;
         }).join(''));
     },
-    noActviedHost: function () {
+    noActviedHost() {
         log(chalk.red('There is no actvied host'));
     },
-    activeHost: function (host) {
-        log(chalk.green("Switch " + host + " successfully!"));
+    activeHost(host) {
+        log(chalk.green(`Switch ${host} successfully!`));
     },
-    allHosts: function (hosts) {
+    allHosts(hosts) {
         log(chalk.yellow('All hosts:\n') + hosts.join(','));
     },
-    closeHost: function (host) {
-        log(chalk.green("Close " + host + " successfully!"));
+    closeHost(host) {
+        log(chalk.green(`Close ${host} successfully!`));
     },
-    closeAllHost: function () {
+    closeAllHost() {
         log(chalk.green('Close all hosts successfully!'));
     },
-    catch: function (msg) {
+    catch(msg) {
         log(chalk.red(msg));
     }
 };

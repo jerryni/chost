@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var host, isWin = /^win/.test(process.platform);
+let host, isWin = /^win/.test(process.platform);
 if (isWin) {
     host = 'C:/Windows/System32/drivers/etc/hosts';
 }
